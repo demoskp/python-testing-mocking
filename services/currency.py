@@ -16,13 +16,13 @@ class FXRateService:
         params = {"access_key": self._access_key, "source": from_fx, "currencies": to_fx, "date": date}
         self._response = requests.get(self.BASE_URL + "/historical", params=params)
         self._validate_response()
-        return self._extract_fx_rate(to_fx)
+        return self._extract_fx_rate(from_fx, to_fx)
 
     def current(self, from_fx, to_fx):
         params = {"access_key": self._access_key, "source": from_fx, "currencies": to_fx}
         self._response = requests.get(self.BASE_URL + "/live", params=params)
         self._validate_response()
-        return self._extract_fx_rate(to_fx)
+        return self._extract_fx_rate(from_fx, to_fx)
 
     def _validate_response(self):
         if self._response.status_code != 200:
@@ -40,7 +40,7 @@ class FXRateService:
         if not quotes:
             raise FXRateServiceException("Not fx rate found")
 
-    def _extract_fx_rate(self, fx_rate):
+    def _extract_fx_rate(self, from_fx, to_fx):
         data = self._response.json()
         quotes = data.get("quotes")
-        return quotes.get(fx_rate)
+        return quotes.get(f"{from_fx}{to_fx}")
