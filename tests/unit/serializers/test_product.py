@@ -1,6 +1,6 @@
 import json
 import unittest
-from unittest.mock import MagicMock
+from unittest.mock import Mock
 
 from models.product import Product
 from serializers.product import ProductSerializer
@@ -11,8 +11,8 @@ class TestProductSerializer(unittest.TestCase):
         product = Product(name="Product 1", description="A very detailed description", price=10)
         fx_rate = 1.2
         converted_price = product.price * fx_rate
-        mock_current = MagicMock(return_value=fx_rate)
-        fx_rate_service = MagicMock(current=mock_current)
+        mock_current = Mock(return_value=fx_rate)
+        fx_rate_service = Mock(current=mock_current)
         serializer = ProductSerializer(fx_rate_service=fx_rate_service)
 
         data = serializer.to_json(product, to_currency="EUR")
@@ -30,8 +30,8 @@ class TestProductSerializer(unittest.TestCase):
         product = Product(name="Product 1", description="A very detailed description", price=10)
         fx_rate = 1.2
         converted_price = product.price * fx_rate
-        mock_current = MagicMock(return_value=fx_rate)
-        fx_rate_service = MagicMock(current=mock_current)
+        mock_current = Mock(return_value=fx_rate)
+        fx_rate_service = Mock(current=mock_current)
         serializer = ProductSerializer(fx_rate_service=fx_rate_service)
 
         data = serializer.to_xml(product, to_currency="EUR")
