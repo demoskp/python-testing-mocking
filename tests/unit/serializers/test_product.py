@@ -1,3 +1,4 @@
+import json
 import unittest
 from unittest.mock import MagicMock
 
@@ -15,14 +16,12 @@ class TestProductSerializer(unittest.TestCase):
         serializer = ProductSerializer(fx_rate_service=fx_rate_service)
 
         data = serializer.to_json(product, to_currency="EUR")
-        expected = (
-                '{"data": {"name": "'
-                + product.name
-                + '", "description": "'
-                + product.description
-                + '", "price": '
-                + str(converted_price)
-                + '}}'
+        expected = json.dumps(
+            {"data": {
+                "name": product.name,
+                "description": product.description,
+                "price": converted_price
+            }}
         )
 
         assert data == expected
